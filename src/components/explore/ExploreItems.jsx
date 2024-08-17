@@ -1,9 +1,48 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import AuthorImage from "../../images/author_thumbnail.jpg";
 import nftImage from "../../images/nftImage.jpg";
+import Countdown from "../UI/Countdown";
 
-const ExploreItems = () => {
+const Explorer = () => {
+  const [explorer, setExplorer] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  async function fetchExplorer() {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        "https://us-central1-nft-cloud-functions.cloudfunctions.net/explore"
+      );
+      setLoading(false);
+      setExplorer(response.data);
+      console.log(response.data);
+    } catch (err) {
+      console.error("Error fetching data:", err);
+      setError(err);
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    Aos.init();
+    fetchExplorer();
+  }, []);
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  return <ExploreItems explorer={explorer} />;
+};
+
+const ExploreItems = ({ explorer }) => {
   return (
     <>
       <div>
@@ -14,7 +53,7 @@ const ExploreItems = () => {
           <option value="likes_high_to_low">Most liked</option>
         </select>
       </div>
-      {new Array(8).fill(0).map((_, index) => (
+      {explorer.map((item, index) => (
         <div
           key={index}
           className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
@@ -31,8 +70,9 @@ const ExploreItems = () => {
                 <i className="fa fa-check"></i>
               </Link>
             </div>
-            <div className="de_countdown">5h 30m 32s</div>
-
+            <div className="de_countdown">
+              <Countdown key={item.id} expiryDate={item.expiryDate} />
+            </div>
             <div className="nft__item_wrap">
               <div className="nft__item_extra">
                 <div className="nft__item_buttons">
@@ -57,12 +97,12 @@ const ExploreItems = () => {
             </div>
             <div className="nft__item_info">
               <Link to="/item-details">
-                <h4>Pinky Ocean</h4>
+                <h4>{item.title}</h4>
               </Link>
-              <div className="nft__item_price">1.74 ETH</div>
+              <div className="nft__item_price">{item.price} ETH</div>
               <div className="nft__item_like">
                 <i className="fa fa-heart"></i>
-                <span>69</span>
+                <span>{item.likes}</span>
               </div>
             </div>
           </div>
@@ -77,4 +117,4 @@ const ExploreItems = () => {
   );
 };
 
-export default ExploreItems;
+export default Explorer;
