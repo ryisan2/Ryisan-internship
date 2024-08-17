@@ -75,6 +75,7 @@ const NewItems = () => {
               removeArrowOnDeviceType={["tablet", "mobile"]}
               dotListClass="custom-dot-list-style"
               itemClass="carousel-item-padding-40-px"
+              className="flex justify-center align-items"
             >
               {loading
                 ? Array.from({ length: 4 }).map((_, index) => (
@@ -130,7 +131,7 @@ const NewItems = () => {
                           <Link to={`/item-details/${item.nftId}`}>
                             <img
                               src={item.nftImage}
-                              className="lazy nft__item_preview w-[300px] h-[300px] object-cover" // Adjust width and height with Tailwind classes
+                              className="lazy nft__item_preview mt-6 w-[500px] h-[300px] object-cover" // Adjust width and height with Tailwind classes
                               alt=""
                             />
                           </Link>
