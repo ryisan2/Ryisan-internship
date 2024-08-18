@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Countdown from "./UI/Countdown";
 import Skeleton from "./UI/Skeleton";
-import Author from "../pages/Author";
+import AuthorImage from "../images/author_thumbnail.jpg"; // Default image for fallback
 
 const AllItems = ({ item, loading }) => {
   if (loading) {
@@ -56,18 +56,18 @@ const AllItems = ({ item, loading }) => {
       </div>
 
       <div className="flex justify-center items-center">
-        <Link to={`/item-details/${item.nftId}`}>
+        <Link to={`/ItemDetails/${item.nftId}`}>
           <img
             src={item.nftImage}
             className="lazy h-64 w-full object-cover"
-            alt=""
+            alt={item.title}
           />
         </Link>
       </div>
 
       <div className="nft__item_info min-h-[100px] mt-4">
-        <Link to={`/item-details/${item.nftId}`}>
-          <h4 className="text-center">{item.title || "Untitled"}</h4>
+        <Link to={`/ItemDetails/${item.nftId}`}>
+          <h4 className="text-center">{item.title}</h4>
         </Link>
         <div className="nft__item_price text-center">
           {item.price} ETH
