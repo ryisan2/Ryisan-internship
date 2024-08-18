@@ -1,11 +1,10 @@
-// src/components/AllItems.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import Countdown from "./UI/Countdown";
 
 const AllItems = ({ item }) => {
   return (
-    <div className="nft__item h-full" data-aos="fade-in">
+    <div className="nft__item mb-5 h-full" data-aos="fade-in">
       <div className="flex items-start author_list_pp">
         <Link
           to={`/author/${item.authorId}`}
@@ -14,7 +13,7 @@ const AllItems = ({ item }) => {
           title={`Creator: ${item.authorName}`}
         >
           <img
-            className="lazy h-12 w-12 rounded-full"
+            className="lazy h-8 w-12 rounded-full"
             src={item.authorImage}
             alt=""
           />
@@ -34,7 +33,7 @@ const AllItems = ({ item }) => {
         <Link to={`/item-details/${item.nftId}`}>
           <img
             src={item.nftImage}
-            className="lazy h-64 w-full object-cover"
+            className="lazy h-48 w-full object-cover"
             alt=""
           />
         </Link>
