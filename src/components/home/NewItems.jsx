@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Skeleton from "../UI/Skeleton";
-import "aos/dist/aos.css";
-import Aos from "aos";
 import AllItems from "../allitems";
 
-
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-
-const NewItems = () => {
+const ExploreItems = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [itemDisplay, setItemDisplay] = useState(8);
 
-  async function fetchItems() {
+  async function fetchItems(filter) {
+    setLoading(true);
     try {
       const response = await axios.get(
-        `https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems`
+        filter
+          ? `https://us-central1-nft-cloud-functions.cloudfunctions.net/explore?filter=${filter}`
+          : `https://us-central1-nft-cloud-functions.cloudfunctions.net/explore`
       );
       setItems(response.data);
     } catch (error) {
-      console.error("Failed to fetch items", error);
+      console.error("Error fetching items:", error);
     } finally {
       setLoading(false);
     }
@@ -28,88 +26,75 @@ const NewItems = () => {
 
   useEffect(() => {
     fetchItems();
-    Aos.init();
   }, []);
-//using this just to change up and commmit 
 
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5,
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-    },
-  };
+  function skeleton(index) {
+    return (
+      <div
+        key={index}
+        className="col-lg-3 col-md-6 col-sm-6 col-xs-12 pb-4"
+        style={{ display: "block", backgroundSize: "cover" }}
+      >
+        <Skeleton width="100%" height={440} borderRadius={15} />
+      </div>
+    );
+  }
+
+  function loadMore() {
+    setItemDisplay((prevDisplay) => prevDisplay + 4);
+  }
+
+  function loadLess() {
+    setItemDisplay((prevDisplay) => Math.max(prevDisplay - 8,));
+
+  }
 
   return (
-    <section id="section-collections" className="">
-      <div className="container">
-        <div className="row">
-          <div className="text-center">
-            <h2 data-aos="fade-in">New Items</h2>
-            <div className=" bg-color-2"></div>
-          </div>
-        </div>
-        <div className="row justify-center align-center">
-          <div>
-            <Carousel
-              swipeable={true}
-              draggable={false}
-              showDots={true}
-              responsive={responsive}
-              infinite={true}
-              keyBoardControl={true}
-              customTransition="all .5"
-              transitionDuration={500}
-              containerClass="carousel-container"
-              removeArrowOnDeviceType={["tablet", "mobile"]}
-              dotListClass="custom-dot-list-style"
-              itemClass="carousel-item-padding-40-px"
-              className="flex justify-center align-items"
-            >
-              {loading
-                ? Array.from({ length: 4 }).map((_, index) => (
-                    <div className="p-2" key={index}>
-                      <div className="nft_coll">
-                        <div className="nft_wrap">
-                          <Skeleton width={500} height={270} />
-                        </div>
-                        <div className="nft_coll_pp">
-                          <Skeleton width={50} height={50} borderRadius={99} />
-                          <i className="fa fa-check"></i>
-                        </div>
-                        <div className="nft_coll_info">
-                          <h4>
-                            <Skeleton height={20} width="40%" />
-                          </h4>
-                          <span>
-                            <Skeleton height={20} width="20%" />
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                : items.map((item, index) => (
-                  <div className="p-2" key={index}>
-                  <AllItems item={item} loading={loading} />
-                </div>
-              ))}
-            </Carousel>
-          </div>
-        </div>
+    <>
+      <div>
+        <select
+          id="filter-items"
+          defaultValue=""
+          onChange={(event) => fetchItems(event.target.value)}
+        >
+          <option value="">Default</option>
+          <option value="price_low_to_high">Price, Low to High</option>
+          <option value="price_high_to_low">Price, High to Low</option>
+          <option value="likes_high_to_low">Most liked</option>
+        </select>
       </div>
-    </section>
+
+      {loading ? (
+        <>
+          {new Array(8).fill(0).map((_, index) => skeleton(index))}
+        </>
+      ) : (
+        <div className="row">
+          {items.slice(0, itemDisplay).map((item, index) => (
+            <div
+              key={index}
+              className="col-lg-3  col-sm-6 col-xs-12 pb-4"
+            >
+              <AllItems item={item} />
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="col-md-12 text-center mt-3">
+        {itemDisplay > 8 && (
+          <button onClick={loadLess} id="loadless" className="btn-main lead mr-2">
+            Load Less
+          </button>
+        )}
+        {itemDisplay < items.length && (
+          <button onClick={loadMore} id="loadmore" className="btn-main lead">
+            Load More
+          </button>
+        )}
+      </div>
+    </>
   );
 };
 
-export default NewItems;
+export default ExploreItems;

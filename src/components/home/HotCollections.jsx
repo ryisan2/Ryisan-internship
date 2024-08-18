@@ -6,6 +6,7 @@ import { Carousel } from 'react-responsive-carousel';
 import Skeleton from '../UI/Skeleton';
 import 'aos/dist/aos.css';
 import Aos from 'aos';
+import Author from '../../pages/Author';
 
 const HotCollections = () => {
   const [hotCollections, setHotCollections] = useState([]);
@@ -106,7 +107,7 @@ const HotCollections = () => {
                       <Link to={`/item-details/${item.nftId}`}>
                         <img
                           src={item.nftImage}
-                          className=" h-[100px] w- [100px]lazy img-fluid"
+                          className=" h-[100px] w-[100px]lazy img-fluid"
                           alt=""
                         />
                       </Link>
