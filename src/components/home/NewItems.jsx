@@ -30,6 +30,7 @@ const NewItems = () => {
     fetchItems();
     Aos.init();
   }, []);
+//using this just to change up and commmit 
 
   const responsive = {
     superLargeDesktop: {
