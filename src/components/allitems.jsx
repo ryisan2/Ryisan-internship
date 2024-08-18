@@ -1,8 +1,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Countdown from "./UI/Countdown";
+import Skeleton from "./UI/Skeleton";
 
-const AllItems = ({ item }) => {
+const AllItems = ({ item, loading }) => {
+  if (loading) {
+    return (
+      <div className="p-2">
+        <div className="nft_coll">
+          <div className="nft_wrap">
+            <Skeleton width={500} height={270} />
+          </div>
+          <div className="nft_coll_pp">
+            <Skeleton width={50} height={50} borderRadius={99} />
+            <i className="fa fa-check"></i>
+          </div>
+          <div className="nft_coll_info">
+            <h4>
+              <Skeleton height={20} width="40%" />
+            </h4>
+            <span>
+              <Skeleton height={20} width="20%" />
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="nft__item h-full" data-aos="fade-in">
       <div className="flex items-start author_list_pp">

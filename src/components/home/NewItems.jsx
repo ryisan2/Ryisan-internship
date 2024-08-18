@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import Skeleton from "../UI/Skeleton";
 import "aos/dist/aos.css";
 import Aos from "aos";
+import AllItems from "../allitems";
 
-import Countdown from "../UI/Countdown";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -100,58 +99,10 @@ const NewItems = () => {
                     </div>
                   ))
                 : items.map((item, index) => (
-                    <div className="p-2" key={index}>
-                      <div className="nft__item" data-aos="fade-in">
-                        <div className="author_list_pp">
-                          <Link
-                            to={`/author/${item.authorId}`}
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="Creator: Monica Lucas"
-                          >
-                            <img
-                              className="lazy"
-                              src={item.authorImage}
-                              alt=""
-                            />
-                            <i className="fa fa-check"></i>
-                          </Link>
-                        </div>
-                        {item.expiryDate && (
-                          <div>
-                            <Countdown
-                              key={item.id}
-                              expiryDate={item.expiryDate}
-                            />
-                          </div>
-                        )}
-                        <div className="flex justify-center align-items">
-
-                        <div className="flex justify-center items-center">
-                          <Link to={`/item-details/${item.nftId}`}>
-                            <img
-                              src={item.nftImage}
-                              className="lazy nft__item_preview mt-6 w-[500px] h-[300px] object-cover" // Adjust width and height with Tailwind classes
-                              alt=""
-                            />
-                          </Link>
-                        </div>
-                        </div>
-                        <div className="nft__item_info">
-                          <Link to={`/item-details/${item.nftId}`}>
-                            <h4>{item.title}</h4>
-                          </Link>
-                          <div className="nft__item_price">
-                            {item.price} ETH
-                          </div>
-                          <div className="nft__item_like">
-                            <i className="fa fa-heart"></i>
-                            <span>{item.likes}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                  <div className="p-2" key={index}>
+                  <AllItems item={item} loading={loading} />
+                </div>
+              ))}
             </Carousel>
           </div>
         </div>
