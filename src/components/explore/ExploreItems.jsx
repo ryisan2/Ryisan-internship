@@ -41,11 +41,19 @@ const ExploreItems = () => {
   }
 
   function loadMore() {
+<<<<<<< HEAD
     setItemDisplay((prevDisplay) => prevDisplay + 4);
   }
 
   function loadLess() {
     setItemDisplay((prevDisplay) => Math.max(prevDisplay - 8,));
+=======
+    setItemDisplay((prevDisplay) => prevDisplay + 8);
+  }
+
+  function loadLess() {
+    setItemDisplay((prevDisplay) => Math.max(prevDisplay - 8, 8));
+>>>>>>> 09662e0f0f972710205154ec6013dabddbc0698b
   }
 
   return (
@@ -72,8 +80,13 @@ const ExploreItems = () => {
           {items.slice(0, itemDisplay).map((item, index) => (
             <div
               key={index}
+<<<<<<< HEAD
               className="col-lg-3  col-sm-6 col-xs-12 pb-4"
               
+=======
+              className="col-lg-3 col-md-6 col-sm-6 col-xs-12 pb-4"
+              style={{ display: "block", backgroundSize: "cover" }}
+>>>>>>> 09662e0f0f972710205154ec6013dabddbc0698b
             >
               <AllItems item={item} />
             </div>

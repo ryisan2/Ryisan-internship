@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from "react";
 import { Link } from "react-router-dom";
 import Countdown from "./UI/Countdown";
@@ -28,6 +29,14 @@ const AllItems = ({ item, loading }) => {
     );
   }
 
+=======
+// src/components/AllItems.jsx
+import React from "react";
+import { Link } from "react-router-dom";
+import Countdown from "./UI/Countdown";
+
+const AllItems = ({ item }) => {
+>>>>>>> 09662e0f0f972710205154ec6013dabddbc0698b
   return (
     <div className="nft__item h-full" data-aos="fade-in">
       <div className="flex items-start author_list_pp">

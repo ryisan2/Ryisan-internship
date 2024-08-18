@@ -4,14 +4,20 @@ import Skeleton from "../UI/Skeleton";
 import "aos/dist/aos.css";
 import Aos from "aos";
 import AllItems from "../allitems";
+<<<<<<< HEAD
 
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+=======
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+>>>>>>> 09662e0f0f972710205154ec6013dabddbc0698b
 
 const NewItems = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [centerSlidePercentage, setCenterSlidePercentage] = useState(33.33);
 
   async function fetchItems() {
     try {
@@ -29,26 +35,22 @@ const NewItems = () => {
   useEffect(() => {
     fetchItems();
     Aos.init();
-  }, []);
 
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5,
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-    },
-  };
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setCenterSlidePercentage(100);
+      } else {
+        setCenterSlidePercentage(33.33);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Call it initially to set the correct value
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <section id="section-collections" className="">
@@ -62,19 +64,12 @@ const NewItems = () => {
         <div className="row justify-center align-center">
           <div>
             <Carousel
-              swipeable={true}
-              draggable={false}
-              showDots={true}
-              responsive={responsive}
-              infinite={true}
-              keyBoardControl={true}
-              customTransition="all .5"
-              transitionDuration={500}
-              containerClass="carousel-container"
-              removeArrowOnDeviceType={["tablet", "mobile"]}
-              dotListClass="custom-dot-list-style"
-              itemClass="carousel-item-padding-40-px"
-              className="flex justify-center align-items"
+              showArrows={true}
+              showThumbs={false}
+              infiniteLoop={true}
+              centerMode={true}
+              centerSlidePercentage={centerSlidePercentage}
+              showStatus={false}
             >
               {loading
                 ? Array.from({ length: 4 }).map((_, index) => (
@@ -99,10 +94,21 @@ const NewItems = () => {
                     </div>
                   ))
                 : items.map((item, index) => (
+<<<<<<< HEAD
                   <div className="p-2" key={index}>
                   <AllItems item={item} loading={loading} />
                 </div>
               ))}
+=======
+                    <div
+                      className="p-2"
+                      key={index}
+                      style={{ display: "block", backgroundSize: "cover" }}
+                    >
+                      <AllItems item={item} />
+                    </div>
+                  ))}
+>>>>>>> 09662e0f0f972710205154ec6013dabddbc0698b
             </Carousel>
           </div>
         </div>
