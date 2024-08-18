@@ -1,37 +1,26 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import EthImage from "../images/ethereum.svg";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Skeleton from "../components/UI/Skeleton";
 
-// Move fetchDetails function outside of the component
-async function fetchDetails(id, setItemData, setLoading) {
-  try {
-    const { data } = await axios.get(
-      `https://us-central1-nft-cloud-functions.cloudfunctions.net/itemDetails?nftId=${id}`
-    );
-    setItemData(data);
-  } catch (error) {
-    console.error("Error fetching item details:", error);
-  } finally {
-    setLoading(false);
-  }
-}
-
 const ItemDetails = () => {
-  const { id } = useParams();
+  const { nftId } = useParams();
   const [itemData, setItemData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Use useCallback to memoize the fetchDetails function
-  const memoizedFetchDetails = useCallback(() => {
-    fetchDetails(id, setItemData, setLoading);
-  }, [id]);
+  async function fetchDetails() {
+    const { data } = await axios.get(
+      `https://us-central1-nft-cloud-functions.cloudfunctions.net/itemDetails?nftId=${nftId}`
+    );
+    setItemData(data);
+    setLoading(false);
+  }
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    memoizedFetchDetails();
-  }, [id, memoizedFetchDetails]); // Added memoizedFetchDetails to dependency array
+    fetchDetails();
+  }, []);
 
   return (
     <div id="wrapper">
@@ -47,13 +36,16 @@ const ItemDetails = () => {
                   </div>
                   <div className="col-md-6">
                     <div className="item_info">
-                      <Skeleton width={200} height={40} />
+                    <Skeleton width={200} height={40} />
+
                       <div className="item_info_counts">
                         <div className="item_info_views">
                           <i className="fa fa-eye"></i>
+                      
                         </div>
                         <div className="item_info_like">
                           <i className="fa fa-heart"></i>
+                  
                         </div>
                       </div>
                       <p><Skeleton width="100%" height={110} /></p>
@@ -62,11 +54,12 @@ const ItemDetails = () => {
                           <h6><Skeleton width={50} height={20} /></h6>
                           <div className="item_author">
                             <div className="author_list_pp">
-                              <Skeleton width={50} height={50} borderRadius={99} />
-                              <i className="fa fa-check"></i>
+                            <Skeleton width={50} height={50} borderRadius={99} />
+                                <i className="fa fa-check"></i>
+                             
                             </div>
                             <div className="author_list_info">
-                              <Skeleton width={130} height={20} />
+                            <Skeleton width={130} height={20} />
                             </div>
                           </div>
                         </div>
@@ -77,11 +70,12 @@ const ItemDetails = () => {
                           <h6><Skeleton width={50} height={20} /></h6>
                           <div className="item_author">
                             <div className="author_list_pp">
-                              <Skeleton width={50} height={50} borderRadius={99} />
-                              <i className="fa fa-check"></i>
+                            <Skeleton width={50} height={50} borderRadius={99} />
+                                <i className="fa fa-check"></i>
+                             
                             </div>
                             <div className="author_list_info">
-                              <Skeleton width={130} height={20} />
+                            <Skeleton width={130} height={20} />
                             </div>
                           </div>
                         </div>
@@ -107,6 +101,7 @@ const ItemDetails = () => {
                   <div className="col-md-6">
                     <div className="item_info">
                       <h2>{itemData.title}</h2>
+
                       <div className="item_info_counts">
                         <div className="item_info_views">
                           <i className="fa fa-eye"></i>
@@ -146,7 +141,7 @@ const ItemDetails = () => {
                           <h6>Creator</h6>
                           <div className="item_author">
                             <div className="author_list_pp">
-                              <Link to={`/author/${itemData.creatorId}`}>
+                              <Link to={`/author/${itemData.ownerId}`}>
                                 <img
                                   className="lazy"
                                   src={itemData.creatorImage}
@@ -156,7 +151,7 @@ const ItemDetails = () => {
                               </Link>
                             </div>
                             <div className="author_list_info">
-                              <Link to={`/author/${itemData.creatorId}`}>
+                              <Link to={`/author/${itemData.ownerId}`}>
                                 {itemData.creatorName}
                               </Link>
                             </div>
