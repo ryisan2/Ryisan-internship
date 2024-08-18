@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import Skeleton from "../UI/Skeleton";
 import "aos/dist/aos.css";
 import Aos from "aos";
-
-import Countdown from "../UI/Countdown";
-
-import { Carousel } from 'react-responsive-carousel';
+import AllItems from "../allitems";
+import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const NewItems = () => {
@@ -40,11 +37,11 @@ const NewItems = () => {
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     handleResize(); // Call it initially to set the correct value
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -58,8 +55,8 @@ const NewItems = () => {
           </div>
         </div>
         <div className="row justify-center align-center">
-          <div >
-          <Carousel
+          <div>
+            <Carousel
               showArrows={true}
               showThumbs={false}
               infiniteLoop={true}
@@ -90,62 +87,14 @@ const NewItems = () => {
                     </div>
                   ))
                 : items.map((item, index) => (
-                  <div className="p-2" key={index}>
-                    <div className="nft__item flex flex-col justify-between h-full" data-aos="fade-in">
-                      <div className="mb-3">
-
-                      <div className="author_list_pp">
-                        <Link
-                          to={`/author/${item.authorId}`}
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          title="Creator: Monica Lucas"
-                        >
-                          <img
-                            className="lazy h-12 w-12 rounded-full"
-                            src={item.authorImage}
-                            alt=""
-                          />
-                          <i className="fa fa-check"></i>
-                        </Link>
-                      </div>
-                      </div>
-
-                      <div className="mb-5">
-                      {item.expiryDate && (
-                        <div className="flex align-center pt-5">
-                          <Countdown
-                            key={item.id}
-                            expiryDate={item.expiryDate}
-                          />
-                        </div>
-                      )}
-
-                      </div>
-                      <div className="flex justify-center items-center">
-                        <Link to={`/item-details/${item.nftId}`}>
-                          <img
-                            src={item.nftImage}
-                            className="lazy h-64 w-full object-cover"
-                            alt=""
-                          />
-                        </Link>
-                      </div>
-                      <div className="nft__item_info min-h-[100px] mt-4">
-                        <Link to={`/item-details/${item.nftId}`}>
-                          <h4 className="text-center">{item.title}</h4>
-                        </Link>
-                        <div className="nft__item_price text-center">
-                          {item.price} ETH
-                        </div>
-                        <div className="nft__item_like text-center">
-                          <i className="fa fa-heart"></i>
-                          <span>{item.likes}</span>
-                        </div>
-                      </div>
+                    <div
+                      className="p-2"
+                      key={index}
+                      style={{ display: "block", backgroundSize: "cover" }}
+                    >
+                      <AllItems item={item} />
                     </div>
-                  </div>
-                ))}
+                  ))}
             </Carousel>
           </div>
         </div>
