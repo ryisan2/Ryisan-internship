@@ -68,14 +68,14 @@ const AllItems = ({ item }) => {
           <img
             src={item.nftImage}
             className="lazy h-64 w-full object-cover"
-            alt=""
+            alt={item.title}
           />
         </Link>
       </div>
 
       <div className="nft__item_info min-h-[100px] mt-4">
         <Link to={`/item-details/${item.nftId}`}>
-          <h4 className="text-center">{item.title || "Untitled"}</h4>
+          <h4 className="text-center">{item.title}</h4>
         </Link>
         <div className="nft__item_price text-center">
           {item.price} ETH
