@@ -1,91 +1,103 @@
 import React, { useEffect, useState } from "react";
-import EthImage from "../images/ethereum.svg";
+import AuthorBanner from "../images/author_banner.jpg";
+import AuthorItems from "../components/author/AuthorItems";
 import { Link, useParams } from "react-router-dom";
 import AuthorImage from "../images/author_thumbnail.jpg";
-import nftImage from "../images/nftImage.jpg";
 import axios from "axios";
+import Followers from "../components/UI/Followers";
 import Skeleton from "../components/UI/Skeleton";
 
-const ItemDetails = () => {
+const Author = () => {
   const { id } = useParams();
-  const [itemData, setItemData] = useState([]);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  async function fetchDetails() {
+  async function fetchData() {
     const { data } = await axios.get(
-      `https://us-central1-nft-cloud-functions.cloudfunctions.net/itemDetails?nftId=${id}`
+      `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${id}`
     );
-    setItemData(data);
+    setData(data);
     setLoading(false);
   }
 
   useEffect(() => {
+    fetchData();
     window.scrollTo(0, 0);
-    fetchDetails();
   }, []);
 
   return (
     <div id="wrapper">
       <div className="no-bottom no-top" id="content">
         <div id="top"></div>
-        <section aria-label="section" className="mt90 sm-mt-0">
+
+        <section
+          id="profile_banner"
+          aria-label="section"
+          className="text-light"
+          data-bgimage="url(images/author_banner.jpg) top"
+          style={{ background: `url(${AuthorBanner}) top` }}
+        ></section>
+
+        <section aria-label="section">
           <div className="container">
             <div className="row">
               {loading ? (
                 <>
-                  <div className="col-md-6 text-center">
-                    <Skeleton width={480} height={530} borderRadius={5} />
-                  </div>
-                  <div className="col-md-6">
-                    <div className="item_info">
-                    <Skeleton width={200} height={40} />
+                  <div className="col-md-12">
+                    <div className="d_profile de-flex">
+                      <div className="de-flex-col">
+                        <div className="profile_avatar">
+                          <Skeleton
+                            width={150}
+                            height={150}
+                            borderRadius={99}
+                          />
+                          <i className="fa fa-check"></i>
+                          <div className="profile_name">
+                            <h4>
+                              <Skeleton width={200} height={30} />
+                              <span className="profile_username">
+                                <Skeleton width={100} height={20} />
+                              </span>
+                              <span id="wallet" className="profile_wallet">
+                                <Skeleton width={300} height={20} />
+                              </span>
+                            </h4>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="profile_follow de-flex">
+                        <div className="de-flex-col">
+                          <div className="profile_follower">
+                            <Skeleton width={120} height={25} />
+                          </div>
 
-                      <div className="item_info_counts">
-                        <div className="item_info_views">
-                          <i className="fa fa-eye"></i>
-                      
-                        </div>
-                        <div className="item_info_like">
-                          <i className="fa fa-heart"></i>
-                  
+                          <Skeleton width={125} height={45} borderRadius={8} />
                         </div>
                       </div>
-                      <p><Skeleton width="100%" height={110} /></p>
-                      <div className="d-flex flex-row">
-                        <div className="mr40">
-                          <h6><Skeleton width={50} height={20} /></h6>
-                          <div className="item_author">
-                            <div className="author_list_pp">
-                            <Skeleton width={50} height={50} borderRadius={99} />
-                                <i className="fa fa-check"></i>
-                             
-                            </div>
-                            <div className="author_list_info">
-                            <Skeleton width={130} height={20} />
-                            </div>
+                    </div>
+                  </div>
+
+                  <div className="col-md-12">
+                    <div className="de_tab tab_simple">
+                      <div className="de_tab_content">
+                        <div className="tab-1">
+                          <div className="row">
+                            {data
+                              ? new Array(8).fill(0).map((_, index) => (
+                                  <div
+                                    className="col-lg-3 col-md-6 col-sm-6 col-xs-12 pb-3"
+                                    key={index}
+                                  >
+                                    <Skeleton
+                                      width="100%"
+                                      height={440}
+                                      borderRadius={20}
+                                    />
+                                  </div>
+                                ))
+                              : null}
                           </div>
-                        </div>
-                        <div></div>
-                      </div>
-                      <div className="de_tab tab_simple">
-                        <div className="de_tab_content">
-                          <h6><Skeleton width={50} height={20} /></h6>
-                          <div className="item_author">
-                            <div className="author_list_pp">
-                            <Skeleton width={50} height={50} borderRadius={99} />
-                                <i className="fa fa-check"></i>
-                             
-                            </div>
-                            <div className="author_list_info">
-                            <Skeleton width={130} height={20} />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="spacer-40"></div>
-                        <h6><Skeleton width={50} height={20} /></h6>
-                        <div className="nft-item-price">
-                          <img src={EthImage} alt="" />
-                          <span><Skeleton width={60} height={30} /></span>
                         </div>
                       </div>
                     </div>
@@ -93,79 +105,40 @@ const ItemDetails = () => {
                 </>
               ) : (
                 <>
-                  <div className="col-md-6 text-center">
-                    <img
-                      src={itemData.nftImage}
-                      className="img-fluid img-rounded mb-sm-30 nft-image"
-                      alt=""
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <div className="item_info">
-                      <h2>{itemData.title}</h2>
+                  <div className="col-md-12">
+                    <div className="d_profile de-flex">
+                      <div className="de-flex-col">
+                        <div className="profile_avatar">
+                          <img src={data.authorImage} alt="" />
 
-                      <div className="item_info_counts">
-                        <div className="item_info_views">
-                          <i className="fa fa-eye"></i>
-                          {itemData.views}
-                        </div>
-                        <div className="item_info_like">
-                          <i className="fa fa-heart"></i>
-                          {itemData.likes}
-                        </div>
-                      </div>
-                      <p>{itemData.description}</p>
-                      <div className="d-flex flex-row">
-                        <div className="mr40">
-                          <h6>Owner</h6>
-                          <div className="item_author">
-                            <div className="author_list_pp">
-                              <Link to={`/author/${itemData.ownerId}`}>
-                                <img
-                                  className="lazy"
-                                  src={itemData.ownerImage}
-                                  alt=""
-                                />
-                                <i className="fa fa-check"></i>
-                              </Link>
-                            </div>
-                            <div className="author_list_info">
-                              <Link to={`/author/${itemData.ownerId}`}>
-                                {itemData.ownerName}
-                              </Link>
-                            </div>
+                          <i className="fa fa-check"></i>
+                          <div className="profile_name">
+                            <h4>
+                              {data.authorName}
+                              <span className="profile_username">
+                                @{data.tag}
+                              </span>
+                              <span id="wallet" className="profile_wallet">
+                                {data.address}
+                              </span>
+                              <button id="btn_copy" title="Copy Text">
+                                Copy
+                              </button>
+                            </h4>
                           </div>
                         </div>
-                        <div></div>
                       </div>
-                      <div className="de_tab tab_simple">
-                        <div className="de_tab_content">
-                          <h6>Creator</h6>
-                          <div className="item_author">
-                            <div className="author_list_pp">
-                              <Link to={`/author/${itemData.ownerId}`}>
-                                <img
-                                  className="lazy"
-                                  src={itemData.creatorImage}
-                                  alt=""
-                                />
-                                <i className="fa fa-check"></i>
-                              </Link>
-                            </div>
-                            <div className="author_list_info">
-                              <Link to={`/author/${itemData.ownerId}`}>
-                                {itemData.creatorName}
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="spacer-40"></div>
-                        <h6>Price</h6>
-                        <div className="nft-item-price">
-                          <img src={EthImage} alt="" />
-                          <span>{itemData.price}</span>
-                        </div>
+                      <div className="profile_follow de-flex">
+                        {data.followers ? (
+                          <Followers followers={data.followers} />
+                        ) : null}
                       </div>
+                    </div>
+                  </div>
+
+                  <div className="col-md-12">
+                    <div className="de_tab tab_simple">
+                      <AuthorItems data={data} authorPic={data.authorImage} />
                     </div>
                   </div>
                 </>
@@ -178,4 +151,4 @@ const ItemDetails = () => {
   );
 };
 
-export default ItemDetails;
+export default Author;

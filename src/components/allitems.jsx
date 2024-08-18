@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Countdown from "./UI/Countdown";
 import Skeleton from "./UI/Skeleton";
+import Author from "../pages/Author";
 
 const AllItems = ({ item, loading }) => {
   if (loading) {
@@ -32,7 +33,7 @@ const AllItems = ({ item, loading }) => {
     <div className="nft__item h-full" data-aos="fade-in">
       <div className="flex items-start author_list_pp">
         <Link
-          to={`/author/${item.authorId}`}
+          to={`/Author/${item.authorId}`}
           data-bs-toggle="tooltip"
           data-bs-placement="top"
           title={`Creator: ${item.authorName}`}
