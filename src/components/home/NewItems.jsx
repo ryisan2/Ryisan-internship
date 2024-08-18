@@ -4,15 +4,11 @@ import Skeleton from "../UI/Skeleton";
 import "aos/dist/aos.css";
 import Aos from "aos";
 import AllItems from "../allitems";
-<<<<<<< HEAD
 
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-=======
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
->>>>>>> 09662e0f0f972710205154ec6013dabddbc0698b
+
 
 const NewItems = () => {
   const [items, setItems] = useState([]);
@@ -94,21 +90,10 @@ const NewItems = () => {
                     </div>
                   ))
                 : items.map((item, index) => (
-<<<<<<< HEAD
                   <div className="p-2" key={index}>
                   <AllItems item={item} loading={loading} />
                 </div>
               ))}
-=======
-                    <div
-                      className="p-2"
-                      key={index}
-                      style={{ display: "block", backgroundSize: "cover" }}
-                    >
-                      <AllItems item={item} />
-                    </div>
-                  ))}
->>>>>>> 09662e0f0f972710205154ec6013dabddbc0698b
             </Carousel>
           </div>
         </div>
