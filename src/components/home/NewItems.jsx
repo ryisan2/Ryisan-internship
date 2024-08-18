@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import Skeleton from "../UI/Skeleton";
 import "aos/dist/aos.css";
 import Aos from "aos";
-
-import Countdown from "../UI/Countdown";
-
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
+import AllItems from "../allitems";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const NewItems = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [centerSlidePercentage, setCenterSlidePercentage] = useState(33.33);
 
   async function fetchItems() {
     try {
@@ -30,26 +28,22 @@ const NewItems = () => {
   useEffect(() => {
     fetchItems();
     Aos.init();
-  }, []);
 
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5,
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-    },
-  };
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setCenterSlidePercentage(100);
+      } else {
+        setCenterSlidePercentage(33.33);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Call it initially to set the correct value
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <section id="section-collections" className="">
@@ -63,19 +57,12 @@ const NewItems = () => {
         <div className="row justify-center align-center">
           <div>
             <Carousel
-              swipeable={true}
-              draggable={false}
-              showDots={true}
-              responsive={responsive}
-              infinite={true}
-              keyBoardControl={true}
-              customTransition="all .5"
-              transitionDuration={500}
-              containerClass="carousel-container"
-              removeArrowOnDeviceType={["tablet", "mobile"]}
-              dotListClass="custom-dot-list-style"
-              itemClass="carousel-item-padding-40-px"
-              className="flex justify-center align-items"
+              showArrows={true}
+              showThumbs={false}
+              infiniteLoop={true}
+              centerMode={true}
+              centerSlidePercentage={centerSlidePercentage}
+              showStatus={false}
             >
               {loading
                 ? Array.from({ length: 4 }).map((_, index) => (
@@ -100,56 +87,12 @@ const NewItems = () => {
                     </div>
                   ))
                 : items.map((item, index) => (
-                    <div className="p-2" key={index}>
-                      <div className="nft__item" data-aos="fade-in">
-                        <div className="author_list_pp">
-                          <Link
-                            to={`/author/${item.authorId}`}
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="Creator: Monica Lucas"
-                          >
-                            <img
-                              className="lazy"
-                              src={item.authorImage}
-                              alt=""
-                            />
-                            <i className="fa fa-check"></i>
-                          </Link>
-                        </div>
-                        {item.expiryDate && (
-                          <div>
-                            <Countdown
-                              key={item.id}
-                              expiryDate={item.expiryDate}
-                            />
-                          </div>
-                        )}
-                        <div className="flex justify-center align-items">
-
-                        <div className="flex justify-center items-center">
-                          <Link to={`/item-details/${item.nftId}`}>
-                            <img
-                              src={item.nftImage}
-                              className="lazy nft__item_preview mt-6 w-[500px] h-[300px] object-cover" // Adjust width and height with Tailwind classes
-                              alt=""
-                            />
-                          </Link>
-                        </div>
-                        </div>
-                        <div className="nft__item_info">
-                          <Link to={`/item-details/${item.nftId}`}>
-                            <h4>{item.title}</h4>
-                          </Link>
-                          <div className="nft__item_price">
-                            {item.price} ETH
-                          </div>
-                          <div className="nft__item_like">
-                            <i className="fa fa-heart"></i>
-                            <span>{item.likes}</span>
-                          </div>
-                        </div>
-                      </div>
+                    <div
+                      className="p-2"
+                      key={index}
+                      style={{ display: "block", backgroundSize: "cover" }}
+                    >
+                      <AllItems item={item} />
                     </div>
                   ))}
             </Carousel>
