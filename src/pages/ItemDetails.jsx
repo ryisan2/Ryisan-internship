@@ -141,7 +141,7 @@ const ItemDetails = () => {
                           <h6>Creator</h6>
                           <div className="item_author">
                             <div className="author_list_pp">
-                              <Link to={`/author/${itemData.ownerId}`}>
+                              <Link to={`/author/${itemData.creatorId}`}>
                                 <img
                                   className="lazy"
                                   src={itemData.creatorImage}
@@ -151,7 +151,7 @@ const ItemDetails = () => {
                               </Link>
                             </div>
                             <div className="author_list_info">
-                              <Link to={`/author/${itemData.ownerId}`}>
+                              <Link to={`/author/${itemData.creatorId}`}>
                                 {itemData.creatorName}
                               </Link>
                             </div>
